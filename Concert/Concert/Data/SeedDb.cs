@@ -42,6 +42,19 @@ namespace Concert.Data
                 await _context.SaveChangesAsync();
             }
 
+            _context.Tickets.Add(new Ticket
+            {
+
+                WasUsed = true,
+                Document = "1234",
+                Name = "Julio",
+                Entrance = null,
+                Date = DateTime.Now,
+
+            });
+
+            await _context.SaveChangesAsync();
+
 
         }
 
