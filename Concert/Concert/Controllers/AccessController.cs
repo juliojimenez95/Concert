@@ -66,9 +66,54 @@ namespace Concert.Controllers
 
         }
 
-        private object Register()
+
+        public async Task<IActionResult> Register(int? id)
         {
-            throw new NotImplementedException();
+            Ticket ticket = await _context.Tickets.FindAsync(id);
+            TicketViewModel model = new()
+            {
+                Document = ticket.Document,
+                Id = ticket.Id,
+                Name = ticket.Name,
+                Date = DateTime.Now,
+                WasUsed = true,
+                Entrances = await _combosHelper.GetComboEntrancesAsync(),
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(int id, TicketViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Ticket ticket = await _context.Tickets.FindAsync(model.Id);
+                    ticket.Document = model.Document;
+                    ticket.Name = model.Name;
+                    ticket.Date = DateTime.Now;
+                    ticket.WasUsed = true;
+                    ticket.Entrance = await _context.Entrances.FindAsync(model.EntranceId);
+                    _context.Update(ticket);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+
+            model.Entrances = await _combosHelper.GetComboEntrancesAsync();
+            return View(model);
         }
 
     }

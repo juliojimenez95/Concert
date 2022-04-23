@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Concert.Migrations
 {
-    public partial class AddEntities : Migration
+    public partial class addEntitiesandEdit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

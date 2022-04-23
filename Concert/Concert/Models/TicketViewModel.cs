@@ -1,16 +1,11 @@
-﻿namespace Concert.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace Concert.Models
 {
-    public class TicketViewModel
+    public class TicketViewModel: EditTicketViewModel
     {
-        public int Id { get; set; }
+        public int EntranceId { get; set; }
 
-
-        public bool WasUsed { get; set; }
-        public string? Document { get; set; }
-        public string? Name { get; set; }
-
-        public int? EntranceId { get; set; }
-
-        public DateTime? Date { get; set; }
+        public IEnumerable<SelectListItem> Entrances { get; set; }
     }
 }
